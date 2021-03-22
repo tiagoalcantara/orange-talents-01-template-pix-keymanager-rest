@@ -44,7 +44,6 @@ class DetalharChaveController(
     }
 }
 
-@Introspected
 data class BuscarChaveHttpResponse(
     val idCliente: String,
     val idPix: String,
@@ -63,7 +62,6 @@ data class ContaResponse(
 data class ChaveResponse(
     val tipo: TipoChave,
     val chave: String,
-    @field:JsonFormat(pattern = "dd/MM/yyyy")
     val criadaEm: LocalDateTime,
     val conta: ContaResponse,
 )
@@ -77,7 +75,7 @@ fun BuscarChaveResponse.toHttpResponse(): BuscarChaveHttpResponse {
             chave = this.chave.chave,
             criadaEm = this.chave.criadaEm.let {
                 Instant.ofEpochSecond(it.seconds, it.nanos.toLong())
-                    .atZone(ZoneId.of("UTC"))
+                    .atZone(ZoneId.systemDefault())
                     .toLocalDateTime()
             },
             conta = ContaResponse(
