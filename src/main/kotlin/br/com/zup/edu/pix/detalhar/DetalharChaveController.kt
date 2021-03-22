@@ -6,8 +6,6 @@ import br.com.zup.edu.PixKeyManagerServiceGrpc
 import br.com.zup.edu.pix.TipoChave
 import br.com.zup.edu.pix.TipoConta
 import br.com.zup.edu.pix.compartilhado.validacoes.ValidUUID
-import com.fasterxml.jackson.annotation.JsonFormat
-import io.micronaut.core.annotation.Introspected
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
