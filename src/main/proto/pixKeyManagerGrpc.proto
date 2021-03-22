@@ -1,0 +1,105 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "br.com.zup.edu";
+option java_outer_classname = "PixKeyManagerGrpc";
+
+package br.com.zup.edu;
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+service PixKeyManagerService {
+  rpc cadastrar (CadastrarChaveRequest) returns (CadastrarChaveResponse);
+
+  /*
+    COMENTÁRIO SOBRE O EMPTY
+    Por questão de boas práticas, pode ser mais adequado declarar uma message vazia
+    no lugar do empty, para facilitar possíveis alterações futuras sem quebrar
+    nosso código.
+  */
+  rpc remover (RemoverChaveRequest) returns (google.protobuf.Empty);
+
+  rpc buscar(BuscarChaveRequest) returns (BuscarChaveResponse);
+
+  rpc listar(ListarChaveRequest) returns (ListarChaveResponse);
+}
+
+message ListarChaveRequest {
+  string idCliente = 1;
+}
+
+message ListarChaveResponse {
+  message ListagemInfo {
+    string idPix = 1;
+    TipoChave tipoChave = 2;
+    string chave = 3;
+    TipoConta tipoConta = 4;
+    google.protobuf.Timestamp criadaEm = 5;
+  }
+  string idCliente = 2;
+  repeated ListagemInfo chaves = 1;
+}
+
+message BuscarChaveRequest {
+  message BuscaPorPixId{
+    string idChave = 1;
+    string idCliente = 2;
+  }
+
+  oneof busca {
+    BuscaPorPixId pixId = 1;
+    string chave = 2;
+  }
+}
+
+message BuscarChaveResponse {
+  message ChaveInfo {
+    message ContaInfo {
+      TipoConta tipo = 1;
+      string instituicao = 2;
+      string titularNome = 3;
+      string titularCpf = 4;
+      string agencia = 5;
+      string conta = 6;
+    }
+
+    TipoChave tipo = 1;
+    string chave = 2;
+    ContaInfo conta = 3;
+    google.protobuf.Timestamp criadaEm = 4;
+  }
+
+  string idCliente = 1;
+  string idPix = 2;
+  ChaveInfo chave = 3;
+}
+
+message RemoverChaveRequest{
+  string idChave = 1;
+  string idCliente = 2;
+}
+
+enum TipoConta {
+  TIPO_CONTA_DESCONHECIDO = 0;
+  CONTA_CORRENTE = 1;
+  CONTA_POUPANCA = 2;
+}
+
+enum TipoChave {
+  TIPO_CHAVE_DESCONHECIDO = 0;
+  CPF = 1;
+  CELULAR = 2;
+  EMAIL = 3;
+  ALEATORIA = 4;
+}
+
+message CadastrarChaveRequest {
+  string idCliente = 1;
+  TipoChave tipoChave = 2;
+  string chave = 3;
+  TipoConta tipoConta = 4;
+}
+
+message CadastrarChaveResponse {
+  string pixId = 1;
+}
