@@ -17,8 +17,8 @@ import javax.validation.Valid
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
-@Controller("/api/v1/")
 @Validated
+@Controller("/api/v1/")
 class CadastrarChaveController(
     @Inject private val gRpcClient: PixKeyManagerServiceGrpc.PixKeyManagerServiceBlockingStub
 ) {
